@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Code Learning Application</title>
+  <style>
+    /* CSS styles */
+  </style>
+</head>
+<body>
+  <div class="instructions">
+    <h1>Instructions</h1>
+    <p id="instructionText">Place instructions here.</p>
+    <input type="checkbox" id="instructionCheckbox">
+    <label for="instructionCheckbox">Completed</label>
+  </div>
+
+  <div class="code-editor">
+    <h1>Code Editor</h1>
+    <textarea id="codeInput" rows="10" cols="50"></textarea>
+    <button onclick="runCode()">Run Code</button>
+  </div>
+
+  <div class="output">
+    <h1>Output</h1>
+    <div id="outputDisplay"></div>
+    <button onclick="nextInstruction()">Next Instruction</button>
+  </div>
+
+  <script>
+    var instructions = [
+      { text: "Create an h1 element with the text 'Hello, World!'", expectedOutput: "<h1>Hello, World!</h1>" },
+      { text: "Create a p element with the text 'This is a p tag'", expectedOutput: "<p>This is a p tag</p>" }
+    ];
+
+    var currentInstructionIndex = 0;
+
+    function displayCurrentInstruction() {
+      var instructionText = document.getElementById("instructionText");
+      instructionText.textContent = instructions[currentInstructionIndex].text;
+    }
+
+    function markInstructionAsCompleted() {
+      var instructionCheckbox = document.getElementById("instructionCheckbox");
+      instructionCheckbox.checked = true;
+    }
+
+    function runCode() {
+      var code = document.getElementById("codeInput").value;
+      var expectedOutput = instructions[currentInstructionIndex].expectedOutput;
+
+      var output;
+      try {
+        var outputElement = document.createElement('div');
+        outputElement.innerHTML = code;
+        output = outputElement.innerHTML;
+      } catch (error) {
+        output = "Error: " + error.message;
+      }
+
+      var outputDisplay = document.getElementById("outputDisplay");
+      outputDisplay.innerHTML = output;
+
+      if (output === expectedOutput) {
+        markInstructionAsCompleted();
+      }
+    }
+
+    function nextInstruction() {
+      if (currentInstructionIndex < instructions.length - 1) {
+        currentInstructionIndex++;
+        displayCurrentInstruction();
+      } else {
+        alert("All instructions completed!");
+      }
+    }
+
+    displayCurrentInstruction();
+  </script>
+</body>
+</html>
